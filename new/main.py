@@ -2,6 +2,7 @@ from classes.world import *
 from classes.room import *
 from classes.player import *
 
+# hoi ik ben midas
 import time as t
 import random
 import os
