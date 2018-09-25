@@ -1,0 +1,13 @@
+- use function
+
+- monster doing damage
+
+- using sword to kill monster
+
+- monster dropping items in to the room like healing potion
+
+(- monster moving)
+
+(- more interesting maps)
+
+{- better map gen}
