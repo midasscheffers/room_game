@@ -89,10 +89,10 @@ def print_UI():
     print("\n")
     for i in range(len(rooms)):
         rooms[i].print_data()
+    p.print_data()
 
 def print_health():
     print("Your health is: " + str(p.health))
-    print("\n")
     for i in range(len(rooms)):
         if rooms[i].x == p.x and rooms[i].y == p.y:
             if rooms[i].monsterHere == True:
@@ -103,23 +103,6 @@ def print_health():
 def room_logics(user_inp):
     for i in range(len(rooms)):
         rooms[i].room_logic(user_inp, p)
-
-
-def player_logic(user_inp):
-    if user_inp == "i":
-        print(p.inventory)
-        print("\n")
-
-    if user_inp[0:4] == "drop":
-        for i in range(len(rooms)):
-            if rooms[i].x == p.x and rooms[i].y == p.y:
-                for j in p.inventory[::-1]:
-                    if user_inp[5:-1] + user_inp[-1] == j:
-                        rooms[i].inventory.append(j)
-                        print("You droped: " + j)
-                        print("\n")
-                        p.inventory.remove(j)
-                        break
 
 
 while not Exit:
@@ -149,11 +132,7 @@ while not Exit:
         clear()
         p.move(user_inp, w._map)
         room_logics(user_inp)
-        player_logic(user_inp)
-        print('\n')
+        p.player_logic(user_inp, rooms)
         print_UI()
         if user_inp == "q":
             gameExit = True
-        if(not p.moved):
-            print('you can\'t move here')
-            print('\n')

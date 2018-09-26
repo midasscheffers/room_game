@@ -4,6 +4,7 @@ class world:
 
     def __init__(self):
         self._map = []
+        self.normalChar = '0'
 
         with open("MAP.map") as file:
             self._map = file.read().split('\n')
@@ -28,7 +29,7 @@ class world:
                 if randnum == 0:
                     new_map = new_map + '^'
                 else:
-                    new_map = new_map + '0'
+                    new_map = new_map + self.normalChar
             new_map = new_map + '^'
             new_map = new_map + '\n'
 
@@ -37,7 +38,7 @@ class world:
 
         new_map = new_map.split('\n')
 
-        new_map[1] = new_map[1][:1] + "0" + new_map[1][2:]
+        new_map[1] = new_map[1][:1] + self.normalChar + new_map[1][2:]
         new_map[height-1] = new_map[height-2][:width-2] + "!" + new_map[height-2][width-1:]
 
         self._map = new_map

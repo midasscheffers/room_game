@@ -18,13 +18,13 @@ class room:
 
     def what_to_print(self):
         if self.inventory == [] and self.monsterHere == False:
-            self.show_data_str = "there is nothing here"
+            self.show_data_str = "there is nothing here\n"
         elif self.inventory == [] and self.monsterHere == True:
-            self.show_data_str = "there is a big monster in the corner"
+            self.show_data_str = "there is a big monster in the corner\n"
         elif not self.inventory == [] and self.monsterHere == False:
-            self.show_data_str = "In this room there is {}, you are the biggest here".format(self.inventory)
+            self.show_data_str = "In this room there is {}, you are the biggest here\n".format(self.inventory)
         else:
-            self.show_data_str = "In this room there is {}, here is a monster in te corner".format(self.inventory)
+            self.show_data_str = "In this room there is {}, here is a monster in te corner\n".format(self.inventory)
 
 
     def room_logic(self, user_inp, p):
@@ -39,7 +39,7 @@ class room:
                     self.what_to_print()
                 else:
                     self.show_data = True
-                    self.show_data_str == "In this room is {} \n{}".format(rooms[i].inventory, self.data)
+                    self.show_data_str == "In this room is {} \n{}\n".format(self.inventory, self.description)
 
             elif self.id == "Exit":
                 if user_inp == "x":
@@ -50,7 +50,7 @@ class room:
                 for j in self.inventory[::-1]:
                     if user_inp[8:-1] + user_inp[-1] == j:
                         p.inventory.append(j)
-                        self.show_data_str = "You picked up: " + j
+                        self.show_data_str = "You picked up: " + j + "\n"
                         self.show_data = True
                         self.inventory.remove(j)
                         break
