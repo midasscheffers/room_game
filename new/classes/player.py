@@ -51,11 +51,12 @@ class player:
             self.show_data = False
 
     def player_logic(self, user_inp, rooms):
+        if user_inp[0:4] == "use "
         if user_inp == "i":
             self.show_data = True
             self.show_data_str = str(self.inventory) + "\n"
 
-        if user_inp[0:4] == "drop":
+        if user_inp[0:5] == "drop ":
             for i in range(len(rooms)):
                 if rooms[i].x == self.x and rooms[i].y == self.y:
                     for j in self.inventory[::-1]:
