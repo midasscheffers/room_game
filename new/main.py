@@ -68,7 +68,7 @@ def print_menu_line(text):
 
 def print_UI():
     print('-'*64)
-    print_menu_line("Player Name : {:^46}".format(p._name))
+    print_menu_line("Player Name : {:^46}".format(p.name))
     print_menu_line(' ')
     print_menu_line("Commands :")
     print_menu_line(' ')
@@ -104,35 +104,38 @@ def room_logics(user_inp):
     for i in range(len(rooms)):
         rooms[i].room_logic(user_inp, p)
 
-
-while not Exit:
-    gameExit = False
-    set_up_rooms()
-    clear()
-    name = input('what is your name: ')
-    if (len(name) > 41):
-        name = name[0:41]
-    clear()
-    p = player()
-    p._name = name
-    print("-"*64)
-    print("| Begin your quest : {:^41} |".format(p._name))
-    print("-"*64)
-    print("\n")
-    print("this is the map")
-    print("\n")
-    w.draw_map(p.draw_player(w._map))
-    print("\n")
-    print("Press Enter!")
-    print("\n")
-
-    while not gameExit:
-
-        user_inp = input(': ').lower()
+def main():
+    #user_inp = ""
+    #while not user_inp == "q":
+    while not Exit:
+        gameExit = False
+        set_up_rooms()
         clear()
-        p.move(user_inp, w._map)
-        room_logics(user_inp)
-        p.player_logic(user_inp, rooms)
-        print_UI()
-        if user_inp == "q":
-            gameExit = True
+        name = input('what is your name: ')
+        if (len(name) > 41):
+            name = name[0:41]
+        clear()
+        p.name = name
+        print("-"*64)
+        print("| Begin your quest : {:^41} |".format(p.name))
+        print("-"*64)
+        print("\n")
+        print("this is the map")
+        print("\n")
+        w.draw_map(p.draw_player(w._map))
+        print("\n")
+        print("Press Enter!")
+        print("\n")
+
+        while not gameExit:
+
+            user_inp = input(': ').lower()
+            clear()
+            p.move(user_inp, w._map)
+            room_logics(user_inp)
+            p.player_logic(user_inp, rooms)
+            print_UI()
+            if user_inp == "q":
+                gameExit = True
+
+main()
