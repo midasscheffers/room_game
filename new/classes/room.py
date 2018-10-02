@@ -17,6 +17,7 @@ class room:
 
 
     def what_to_print(self):
+        # if len(self.inventory) == 0 and not self.monsterHere:
         if self.inventory == [] and self.monsterHere == False:
             self.show_data_str = "there is nothing here\n"
         elif self.inventory == [] and self.monsterHere == True:
@@ -34,11 +35,12 @@ class room:
             if self.monsterHere == True:
                 p.health -= 20
             if (user_inp == "data"):
+                self.show_data = True
                 if not self.id == "Exit":
-                    self.show_data = True
+                    #self.show_data = True
                     self.what_to_print()
                 else:
-                    self.show_data = True
+                    #self.show_data = True
                     self.show_data_str == "In this room is {} \n{}\n".format(self.inventory, self.description)
 
             elif self.id == "Exit":

@@ -11,11 +11,11 @@ gameExit = False
 #global Exit
 Exit = False
 
-w = world()
-p = player()
+world = world()
+player = player()
 rooms = []
 
-w.random_map(10, 20)
+world.random_map(10, 20)
 def item_spawn(r):
     randnum = random.randint(0,11)
     if randnum == 10:
@@ -32,9 +32,9 @@ def spawn_monster(r):
 def set_up_rooms():
     global rooms
     rooms = []
-    for y in range(w.height-1):
-        for x in range(w.width-1):
-            if w._map[y][x] == "!":
+    for y in range(world.height-1):
+        for x in range(world.width-1):
+            if world._map[y][x] == "!":
                 r = room(x, y)
                 r.inventory = []
                 r.description = "There seems to be an exit here. Do you go in?......\nType \"x\" to exit, You need a key"
@@ -42,7 +42,7 @@ def set_up_rooms():
                 item_spawn(r)
                 spawn_monster(r)
                 rooms.append(r)
-            elif not w._map[y][x] == '^':
+            elif not world._map[y][x] == '^':
                 r = room(x, y)
                 item_spawn(r)
                 spawn_monster(r)
@@ -50,6 +50,7 @@ def set_up_rooms():
                 r.id = (x, y)
                 rooms.append(r)
 
+    # for room in rooms:
     for j in range(len(rooms)):
         if rooms[j].id == (1, 1):
             rooms[j].monsterHere = False
@@ -68,7 +69,7 @@ def print_menu_line(text):
 
 def print_UI():
     print('-'*64)
-    print_menu_line("Player Name : {:^46}".format(p.name))
+    print_menu_line("Player Name : {:^46}".format(player.name))
     print_menu_line(' ')
     print_menu_line("Commands :")
     print_menu_line(' ')
@@ -83,59 +84,75 @@ def print_UI():
     print_menu_line("i - show inventory")
     print('-'*64)
     print("\n")
-    w.draw_map(p.draw_player(w._map))
+    world.draw_map(player.draw_player(world._map))
     print("\n")
     print_health()
     print("\n")
+    # for room in rooms:
     for i in range(len(rooms)):
         rooms[i].print_data()
-    p.print_data()
+    player.print_data()
 
 def print_health():
-    print("Your health is: " + str(p.health))
-    for i in range(len(rooms)):
-        if rooms[i].x == p.x and rooms[i].y == p.y:
-            if rooms[i].monsterHere == True:
-                print("monsters health is: {}".format(rooms[i].monsterHealth))
+    print("Your health is: " + str(player.health))
+    for room in rooms:
+    # for i in range(len(rooms)):
+        if room.x == player.x and room.y == player.y:
+            if room.monsterHere:
+                print("monsters health is: {}".format(room.monsterHealth))
                 print("\n")
 
 
 def room_logics(user_inp):
-    for i in range(len(rooms)):
-        rooms[i].room_logic(user_inp, p)
+    for room in rooms:
+    # room.room_logic(user_inp,p)
+    # for i in range(len(rooms)):
+        room.room_logic(user_inp, player)
+
+
+def game_loop():
+    user_inp = ""
+    while not user_inp == "q":
+        user_inp = input(': ').lower()
+        clear()
+        player.move(user_inp, world._map)
+        room_logics(user_inp)
+        player.player_logic(user_inp, rooms)
+        print_UI()
+        # if user_inp == "q":
+        #     gameExit = True
+
 
 def main():
-    #user_inp = ""
-    #while not user_inp == "q":
-    while not Exit:
-        gameExit = False
-        set_up_rooms()
-        clear()
-        name = input('what is your name: ')
-        if (len(name) > 41):
-            name = name[0:41]
-        clear()
-        p.name = name
-        print("-"*64)
-        print("| Begin your quest : {:^41} |".format(p.name))
-        print("-"*64)
-        print("\n")
-        print("this is the map")
-        print("\n")
-        w.draw_map(p.draw_player(w._map))
-        print("\n")
-        print("Press Enter!")
-        print("\n")
+    set_up_rooms()
+    clear()
+    name = input('what is your name: ')
+    if (len(name) > 41):
+        name = name[0:41]
+    clear()
+    player.name = name
+    print("-"*64)
+    print("| Begin your quest : {:^41} |".format(player.name))
+    print("-"*64)
+    print("\n")
+    print("this is the map")
+    print("\n")
+    world.draw_map(player.draw_player(world._map))
+    print("\n")
+    print("Press Enter!")
+    print("\n")
 
-        while not gameExit:
+    game_loop()
 
-            user_inp = input(': ').lower()
-            clear()
-            p.move(user_inp, w._map)
-            room_logics(user_inp)
-            p.player_logic(user_inp, rooms)
-            print_UI()
-            if user_inp == "q":
-                gameExit = True
+        # while not gameExit:
+        #
+        #     user_inp = input(': ').lower()
+        #     clear()
+        #     p.move(user_inp, w._map)
+        #     room_logics(user_inp)
+        #     p.player_logic(user_inp, rooms)
+        #     print_UI()
+        #     if user_inp == "q":
+        #         gameExit = True
 
 main()
