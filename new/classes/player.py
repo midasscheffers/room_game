@@ -8,9 +8,18 @@ class player:
         self.show_data = False
         self.show_data_str = ""
         self.health = 100
+        self.use_functions = {}
+
+    # def attack(self, rooms, room):
+    #     room.monsterHealth -= 20
+    # def heal(self):
+    #     self.health += 20
+    #
+    # def make_use_functions(self):
+    #     self.use_functions = {"sword" : attack, "healing potion" : heal}
 
     def print_data(self):
-        if self.show_data == True:
+        if self.show_data:
             print(self.show_data_str)
 
     def draw_player(self, _map):
@@ -52,11 +61,15 @@ class player:
 
     def player_logic(self, user_inp, rooms):
         if user_inp[0:4] == "use ":
-            for i in range(len(rooms)):
-                if rooms[i].x == self.x and rooms[i].y == self.y:
+            for room in rooms:
+                if room.x == self.x and room.y == self.y:
                     for j in self.inventory[::-1]:
-                        if user_inp[5:-1] + user_inp[-1] == j:
-                            pass
+                        if user_inp[4:-1] + user_inp[-1] == j:
+                            try:
+                                self.use_functions[user_inp[4:-1] + user_inp[-1]]()
+                            except:
+                                self.show_data = True
+                                self.show_data_str = "you can't use this"
         if user_inp == "i":
             self.show_data = True
             self.show_data_str = str(self.inventory) + "\n"

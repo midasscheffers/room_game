@@ -6,16 +6,6 @@ import time as t
 import random
 import os
 
-#global gameExit
-gameExit = False
-#global Exit
-Exit = False
-
-world = world()
-player = player()
-rooms = []
-
-world.random_map(10, 20)
 def item_spawn(r):
     randnum = random.randint(0,11)
     if randnum == 10:
@@ -29,8 +19,7 @@ def spawn_monster(r):
     if randnum >= 30:
         r.monsterHere = True
 
-def set_up_rooms():
-    global rooms
+def set_up_rooms(world, rooms):
     rooms = []
     for y in range(world.height-1):
         for x in range(world.width-1):
@@ -67,7 +56,7 @@ def print_menu_line(text):
     print("| {:<61}|".format(text))
 
 
-def print_UI():
+def print_UI(world, rooms, player):
     print('-'*64)
     print_menu_line("Player Name : {:^46}".format(player.name))
     print_menu_line(' ')
@@ -86,14 +75,14 @@ def print_UI():
     print("\n")
     world.draw_map(player.draw_player(world._map))
     print("\n")
-    print_health()
+    print_health(rooms, player)
     print("\n")
     # for room in rooms:
-    for i in range(len(rooms)):
-        rooms[i].print_data()
+    for room in rooms:
+        room.print_data()
     player.print_data()
 
-def print_health():
+def print_health(rooms, player):
     print("Your health is: " + str(player.health))
     for room in rooms:
     # for i in range(len(rooms)):
@@ -103,32 +92,41 @@ def print_health():
                 print("\n")
 
 
-def room_logics(user_inp):
+def room_logics(user_inp, rooms, player):
     for room in rooms:
     # room.room_logic(user_inp,p)
     # for i in range(len(rooms)):
         room.room_logic(user_inp, player)
 
 
-def game_loop():
+def game_loop(world, rooms, player):
     user_inp = ""
     while not user_inp == "q":
         user_inp = input(': ').lower()
         clear()
         player.move(user_inp, world._map)
-        room_logics(user_inp)
+        room_logics(user_inp, rooms, player)
         player.player_logic(user_inp, rooms)
-        print_UI()
+        print_UI(world, rooms, player)
         # if user_inp == "q":
         #     gameExit = True
 
 
 def main():
-    set_up_rooms()
+    world = world()
+    player = player()
+    rooms = []
+
+    world.random_map(10, 20)
+
+    set_up_rooms(world, rooms)
+
     clear()
+
     name = input('what is your name: ')
     if (len(name) > 41):
         name = name[0:41]
+
     clear()
     player.name = name
     print("-"*64)
@@ -142,7 +140,7 @@ def main():
     print("Press Enter!")
     print("\n")
 
-    game_loop()
+    game_loop(world, rooms, player)
 
         # while not gameExit:
         #
@@ -154,5 +152,6 @@ def main():
         #     print_UI()
         #     if user_inp == "q":
         #         gameExit = True
+
 
 main()

@@ -12,17 +12,17 @@ class room:
 
 
     def print_data(self):
-        if self.show_data == True:
+        if self.show_data:
             print(self.show_data_str)
 
 
     def what_to_print(self):
         # if len(self.inventory) == 0 and not self.monsterHere:
-        if self.inventory == [] and self.monsterHere == False:
+        if self.inventory == [] and not self.monsterHere:
             self.show_data_str = "there is nothing here\n"
-        elif self.inventory == [] and self.monsterHere == True:
+        elif self.inventory == [] and self.monsterHere:
             self.show_data_str = "there is a big monster in the corner\n"
-        elif not self.inventory == [] and self.monsterHere == False:
+        elif not self.inventory == [] and not self.monsterHere:
             self.show_data_str = "In this room there is {}, you are the biggest here\n".format(self.inventory)
         else:
             self.show_data_str = "In this room there is {}, here is a monster in te corner\n".format(self.inventory)
@@ -32,21 +32,19 @@ class room:
         global gameExit
 
         if self.x == p.x and self.y == p.y:
-            if self.monsterHere == True:
+            if self.monsterHere:
                 p.health -= 20
             if (user_inp == "data"):
                 self.show_data = True
                 if not self.id == "Exit":
-                    #self.show_data = True
                     self.what_to_print()
                 else:
-                    #self.show_data = True
                     self.show_data_str == "In this room is {} \n{}\n".format(self.inventory, self.description)
 
             elif self.id == "Exit":
                 if user_inp == "x":
                     if "key" in p.inventory:
-                        gameExit = True
+                        pass
 
             elif user_inp[0:7] == "pick up":
                 for j in self.inventory[::-1]:
