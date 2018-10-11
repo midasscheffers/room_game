@@ -11,7 +11,7 @@ def item_spawn(r):
     if randnum == 10:
         r.inventory.append("sword")
     randnum = random.randint(0,21)
-    if randnum >= 20:
+    if randnum >= 15:
         r.inventory.append("healing potion")
 
 def spawn_monster(r):
@@ -45,6 +45,7 @@ def set_up_rooms(world, rooms):
             rooms[j].monsterHere = False
     randroom = random.randint(0, len(rooms)-1)
     rooms[randroom].inventory.append("key")
+    return rooms
 
 
 def clear():
@@ -71,6 +72,7 @@ def print_UI(world, rooms, player):
     print_menu_line("pick up \"Item\" - Wil put an item from a room in you inventory")
     print_menu_line("drop \"Item\" - drop a seleted item from inventory to room")
     print_menu_line("i - show inventory")
+    print_menu_line("use \"Item\" - use an Item in the current room")
     print('-'*64)
     print("\n")
     world.draw_map(player.draw_player(world._map))
@@ -92,11 +94,12 @@ def print_health(rooms, player):
                 print("\n")
 
 
-def room_logics(user_inp, rooms, player):
+def room_logics(user_inp, world, rooms, player):
     for room in rooms:
     # room.room_logic(user_inp,p)
     # for i in range(len(rooms)):
-        room.room_logic(user_inp, player)
+        rooms = room.room_logic(user_inp, world, player)
+
 
 
 def game_loop(world, rooms, player):
@@ -104,22 +107,32 @@ def game_loop(world, rooms, player):
     while not user_inp == "q":
         user_inp = input(': ').lower()
         clear()
-        player.move(user_inp, world._map)
-        room_logics(user_inp, rooms, player)
+        player.move(user_inp, world)
+        room_logics(user_inp, world, rooms, player)
         player.player_logic(user_inp, rooms)
+        if player.health <= 0:
+            clear()
+            print("you died")
+            time.sleep(2)
+            break
+        if world.reset:
+            world.random_map(10, 20)
+            rooms = set_up_rooms(world, player)
+            world.reset = False
         print_UI(world, rooms, player)
+
         # if user_inp == "q":
         #     gameExit = True
 
 
 def main():
-    world = world()
-    player = player()
+    w = world()
+    p = player()
     rooms = []
 
-    world.random_map(10, 20)
+    # w.random_map(10, 20)
 
-    set_up_rooms(world, rooms)
+    rooms = set_up_rooms(w, rooms)
 
     clear()
 
@@ -128,19 +141,19 @@ def main():
         name = name[0:41]
 
     clear()
-    player.name = name
+    p.name = name
     print("-"*64)
-    print("| Begin your quest : {:^41} |".format(player.name))
+    print("| Begin your quest : {:^41} |".format(p.name))
     print("-"*64)
     print("\n")
     print("this is the map")
     print("\n")
-    world.draw_map(player.draw_player(world._map))
+    w.draw_map(p.draw_player(w._map))
     print("\n")
     print("Press Enter!")
     print("\n")
 
-    game_loop(world, rooms, player)
+    game_loop(w, rooms, p)
 
         # while not gameExit:
         #

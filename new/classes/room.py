@@ -1,4 +1,5 @@
 class room:
+
     def __init__(self, _x, _y):
         self.inventory = []
         self.id = ""
@@ -18,18 +19,19 @@ class room:
 
     def what_to_print(self):
         # if len(self.inventory) == 0 and not self.monsterHere:
-        if self.inventory == [] and not self.monsterHere:
-            self.show_data_str = "there is nothing here\n"
-        elif self.inventory == [] and self.monsterHere:
-            self.show_data_str = "there is a big monster in the corner\n"
-        elif not self.inventory == [] and not self.monsterHere:
-            self.show_data_str = "In this room there is {}, you are the biggest here\n".format(self.inventory)
-        else:
-            self.show_data_str = "In this room there is {}, here is a monster in te corner\n".format(self.inventory)
+        if not self.id == "Exit":
+            if len(self.inventory) == 0 and not self.monsterHere:
+                self.show_data_str = "there is nothing here\n"
+            elif len(self.inventory) == 0 and self.monsterHere:
+                self.show_data_str = "there is a big monster in the corner\n"
+            elif not len(self.inventory) == 0 and not self.monsterHere:
+                self.show_data_str = "In this room there is {}, you are the biggest here\n".format(self.inventory)
+            else:
+                self.show_data_str = "In this room there is {}, here is a monster in te corner\n".format(self.inventory)
+        elif self.id == "Exit":
+            self.show_data_str = "in this room there is {}\nthere seems to be an exit here\nyou need an key to unlock it".format(self.inventory)
 
-
-    def room_logic(self, user_inp, p):
-        global gameExit
+    def room_logic(self, user_inp, w, p):
 
         if self.x == p.x and self.y == p.y:
             if self.monsterHere:
@@ -44,7 +46,11 @@ class room:
             elif self.id == "Exit":
                 if user_inp == "x":
                     if "key" in p.inventory:
-                        pass
+                        p.x = 1
+                        p.y = 1
+                        p.inventory.remove("key")
+                        w.reset = True
+
 
             elif user_inp[0:7] == "pick up":
                 for j in self.inventory[::-1]:
