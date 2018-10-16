@@ -10,6 +10,7 @@ class player:
         self.inventory = ["key"]
         self.show_data = False
         self.show_data_str = ""
+        self.score = 0
         self.health = 100
         self.use_functions = {"sword" : self.attack, "healing potion" : self.heal}
 
@@ -68,14 +69,21 @@ class player:
             room.monsterHere = False
             self.show_data = True
             self.show_data_str = "you have slain the monster"
+            self.score += 200
 
 
     def heal(self, room, j):
         self.health += 20
         self.inventory.remove(j)
+        self.score += 50
 
 
     def player_logic(self, user_inp, rooms):
+        # if user_inp[0:4] != "use ":
+        #     return
+        # for room in rooms:
+
+
         if user_inp[0:4] == "use ":
             for room in rooms:
                 if room.x == self.x and room.y == self.y:

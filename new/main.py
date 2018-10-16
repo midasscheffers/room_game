@@ -31,7 +31,7 @@ def set_up_rooms(world, rooms):
                 item_spawn(r)
                 spawn_monster(r)
                 rooms.append(r)
-            elif not world._map[y][x] == '^':
+            elif not world._map[y][x] == world.wall_char:
                 r = room(x, y)
                 item_spawn(r)
                 spawn_monster(r)
@@ -85,6 +85,7 @@ def print_UI(world, rooms, player):
     player.print_data()
 
 def print_health(rooms, player):
+    print("your score is: " + str(player.score))
     print("Your health is: " + str(player.health))
     for room in rooms:
     # for i in range(len(rooms)):
@@ -113,7 +114,8 @@ def game_loop(world, rooms, player):
         if player.health <= 0:
             clear()
             print("you died")
-            time.sleep(2)
+            print("your score was: " + str(player.score))
+            t.sleep(2)
             break
         if world.reset:
             world.random_map(10, 20)
@@ -130,7 +132,7 @@ def main():
     p = player()
     rooms = []
 
-    # w.random_map(10, 20)
+    w.random_map(10, 20)
 
     rooms = set_up_rooms(w, rooms)
 

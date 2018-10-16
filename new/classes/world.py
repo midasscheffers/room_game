@@ -29,7 +29,7 @@ class world:
         for i in range(height-2):
             new_map = new_map + self.wall_char
             for j in range(width-2):
-                randnum = random.randint(0, 3)
+                randnum = random.randint(0, 5)
                 if randnum == 0:
                     new_map = new_map + self.wall_char
                 else:

@@ -48,6 +48,7 @@ class room:
                     if "key" in p.inventory:
                         p.x = 1
                         p.y = 1
+                        p.score += 1000
                         p.inventory.remove("key")
                         w.reset = True
 
