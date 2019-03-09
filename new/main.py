@@ -7,6 +7,10 @@ import random
 import os
 
 def item_spawn(r):
+    items = [
+        "sword",
+        "healing potion"
+    ]
     randnum = random.randint(0,11)
     if randnum == 10:
         r.inventory.append("sword")
